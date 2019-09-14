@@ -1,47 +1,69 @@
 package com.banking.domain;
 
+import com.banking.exception.BankingException;
+import com.banking.util.CommonValidator;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonAutoDetect
 public class Account {
 
-    private String accountNumber;
-    private String name;
-    private String country;
-    private double initialAmount;
+  @JsonProperty(required = true)
+  private String accountNumber;
 
+  @JsonProperty(required = true)
+  private String name;
 
-    public String getAccountNumber() {
-        return accountNumber;
-    }
+  @JsonProperty(required = true)
+  private String country;
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
+  @JsonProperty(required = true)
+  private double amount;
 
-    public String getName() {
-        return name;
-    }
+  @JsonProperty(required = true)
+  private String currency;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getCurrency() {
+    return currency;
+  }
 
-    public String getCountry() {
-        return country;
-    }
+  public void setCurrency(final String currency) throws BankingException {
+    CommonValidator.validateInput(currency);
+    this.currency = currency;
+  }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+  public String getAccountNumber() {
+    return accountNumber;
+  }
 
-    public double getInitialAmount() {
-        return initialAmount;
-    }
+  public void setAccountNumber(final String accountNumber) throws BankingException {
+    CommonValidator.validateInput(accountNumber);
+    this.accountNumber = accountNumber;
+  }
 
-    public void setInitialAmount(double initialAmount) {
-        this.initialAmount = initialAmount;
-    }
+  public String getName() {
+    return name;
+  }
 
+  public void setName(final String name) throws BankingException {
+    CommonValidator.validateInput(name);
+    this.name = name;
+  }
 
+  public String getCountry() {
+    return country;
+  }
 
+  public void setCountry(final String country) throws BankingException {
+    CommonValidator.validateInput(country);
+    this.country = country;
+  }
 
+  public double getAmount() {
+    return amount;
+  }
+
+  public void setAmount(double amount) {
+    this.amount = amount;
+  }
 }
-
