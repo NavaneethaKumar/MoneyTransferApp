@@ -1,13 +1,18 @@
 package com.banking.controllers;
 
+import com.banking.config.DIConfig;
 import com.banking.domain.Account;
 import com.banking.dto.AccountDetailsDTO;
 import com.banking.exception.BankingException;
 import com.banking.services.BankingServiceImpl;
 import com.banking.services.IBankingService;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Context;
 import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
@@ -27,11 +32,20 @@ public class MoneyTransferController extends AbstractVerticle {
   public static final String ADD_ACCOUNT = "addAccount";
   public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json; charset=utf-8";
   private static final Logger logger = LoggerFactory.getLogger(MoneyTransferController.class);
+
+  @Inject
   private IBankingService bankingService;
 
   @Override
+  public void init(Vertx vertx, Context context) {
+    super.init(vertx, context);
+    bankingService = Guice
+      .createInjector(new DIConfig())
+      .getInstance(IBankingService.class);
+  }
+
+  @Override
   public void start(Future<Void> fut) {
-    bankingService = new BankingServiceImpl();
     // Create a router object.
     Router router = Router.router(vertx);
     router
